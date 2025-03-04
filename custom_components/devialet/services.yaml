@@ -1,0 +1,98 @@
+set_volume:
+  name: Set volume
+  description: Set volume level for the Devialet speaker.
+  fields:
+    volume:
+      name: Volume
+      description: Volume level (0-100).
+      required: true
+      selector:
+        number:
+          min: 0
+          max: 100
+          mode: slider
+
+set_night_mode:
+  name: Set night mode
+  description: Enable or disable night mode on the Devialet speaker.
+  fields:
+    night_mode:
+      name: Night mode
+      description: Enable or disable night mode.
+      required: true
+      selector:
+        boolean:
+
+set_eq_preset:
+  name: Set EQ preset
+  description: Set an equalizer preset on the Devialet speaker.
+  fields:
+    preset:
+      name: Preset
+      description: The equalizer preset to use (flat, voice, or custom).
+      required: true
+      selector:
+        select:
+          options:
+            - "flat"
+            - "voice"
+            - "custom"
+
+set_custom_eq:
+  name: Set custom EQ
+  description: Set custom equalizer settings on the Devialet speaker.
+  fields:
+    low:
+      name: Low frequencies
+      description: Gain for low frequencies (-12.0 to 12.0 dB).
+      required: false
+      default: 0.0
+      selector:
+        number:
+          min: -12.0
+          max: 12.0
+          step: 0.5
+          mode: slider
+    high:
+      name: High frequencies
+      description: Gain for high frequencies (-12.0 to 12.0 dB).
+      required: false
+      default: 0.0
+      selector:
+        number:
+          min: -12.0
+          max: 12.0
+          step: 0.5
+          mode: slider
+
+volume_up:
+  name: Volume Up
+  description: Increase the volume of the Devialet device.
+
+volume_down:
+  name: Volume Down
+  description: Decrease the volume of the Devialet device.
+
+play:
+  name: Play
+  description: Start or resume playback on the Devialet device.
+
+pause:
+  name: Pause
+  description: Pause playback on the Devialet device.
+
+mute:
+  name: Mute
+  description: Mute the Devialet device.
+
+unmute:
+  name: Unmute
+  description: Unmute the Devialet device.
+
+next_track:
+  name: Next Track
+  description: Skip to the next track.
+
+previous_track:
+  name: Previous Track
+  description: Skip to the previous track.

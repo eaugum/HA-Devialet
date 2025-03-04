@@ -1,0 +1,75 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Devialet device",
+        "description": "Please enter the IP address of your Devialet device.",
+        "data": {
+          "host": "IP address"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "Device is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Devialet Options",
+        "description": "Configure options for Devialet IP Control",
+        "data": {
+          "scan_interval": "Update interval in seconds (5-60)"
+        }
+      }
+    }
+  },
+  "services": {
+    "set_volume": {
+      "name": "Set Volume",
+      "description": "Sets the volume of the Devialet device.",
+      "fields": {
+        "volume": {
+          "name": "Volume",
+          "description": "Volume level (0-100)."
+        }
+      }
+    },
+    "volume_up": {
+      "name": "Volume Up",
+      "description": "Increase the volume of the Devialet device."
+    },
+    "volume_down": {
+      "name": "Volume Down",
+      "description": "Decrease the volume of the Devialet device."
+    },
+    "play": {
+      "name": "Play",
+      "description": "Start or resume playback on the Devialet device."
+    },
+    "pause": {
+      "name": "Pause",
+      "description": "Pause playback on the Devialet device."
+    },
+    "mute": {
+      "name": "Mute",
+      "description": "Mute the Devialet device."
+    },
+    "unmute": {
+      "name": "Unmute",
+      "description": "Unmute the Devialet device."
+    },
+    "next_track": {
+      "name": "Next Track",
+      "description": "Skip to the next track."
+    },
+    "previous_track": {
+      "name": "Previous Track",
+      "description": "Skip to the previous track."
+    }
+  }
+}
