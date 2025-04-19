@@ -39,12 +39,16 @@ set_eq_preset:
             - "custom"
 
 set_custom_eq:
-  name: Set custom EQ
-  description: Set custom equalizer settings on the Devialet speaker.
+  name: Set Custom Equalizer
+  description: Set custom equalizer settings for low and high frequencies.
+  target:
+    entity:
+      domain: media_player
+      integration: devialet
   fields:
     low:
-      name: Low frequencies
-      description: Gain for low frequencies (-12.0 to 12.0 dB).
+      name: Low Frequency
+      description: Low frequency gain (-12.0 to 12.0 dB)
       required: false
       default: 0.0
       selector:
@@ -52,10 +56,10 @@ set_custom_eq:
           min: -12.0
           max: 12.0
           step: 0.5
-          mode: slider
+          mode: box
     high:
-      name: High frequencies
-      description: Gain for high frequencies (-12.0 to 12.0 dB).
+      name: High Frequency
+      description: High frequency gain (-12.0 to 12.0 dB)
       required: false
       default: 0.0
       selector:
@@ -63,7 +67,7 @@ set_custom_eq:
           min: -12.0
           max: 12.0
           step: 0.5
-          mode: slider
+          mode: box
 
 volume_up:
   name: Volume Up
@@ -96,3 +100,11 @@ next_track:
 previous_track:
   name: Previous Track
   description: Skip to the previous track.
+
+reboot_system:
+  name: Reboot System
+  description: Reboot the Devialet system.
+  target:
+    entity:
+      domain: media_player
+      integration: devialet
