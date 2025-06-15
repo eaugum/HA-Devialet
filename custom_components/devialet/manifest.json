@@ -8,6 +8,6 @@
   "codeowners": ["@eaugum"],
   "requirements": ["requests>=2.25.0"],
   "iot_class": "local_polling",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "icon": "mdi:speaker"
 }
