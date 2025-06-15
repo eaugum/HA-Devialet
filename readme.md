@@ -6,14 +6,14 @@ This custom integration for Home Assistant allows you to control your Devialet s
 
 ## Features
 
-- Media player entity with playback controls (play, pause, next, previous)
-- Volume control (set volume, volume up/down, mute/unmute)
-- Source selection (Spotify Connect, AirPlay, UPnP/DLNA, Optical)
-- Media information display (artist, album, track)
-- Night mode support (requires firmware DOS 2.16 or newer)
-- Equalizer with presets (flat, voice, custom) and custom settings
-- Additional sensors for detailed status
-- Stream information display (codec, lossless status)
+- Media playback control (play, pause, stop)
+- Volume control
+- Source selection
+- Equalizer control with presets and custom settings
+- Night mode control
+- System reboot (requires DOS >= 2.16)
+- System power off
+- Device information (firmware version, serial number, local IP)
 
 ## Installation
 
@@ -44,104 +44,47 @@ After installation:
 
 ## Services
 
-The integration provides several services to control your Devialet speaker:
+The integration provides the following services:
 
-- `devialet.set_volume`: Set volume level (0-100)
-- `devialet.volume_up`: Increase volume
-- `devialet.volume_down`: Decrease volume
-- `devialet.play`: Start or resume playback
-- `devialet.pause`: Pause playback
-- `devialet.mute`: Mute sound
-- `devialet.unmute`: Unmute sound
-- `devialet.next_track`: Skip to next track
-- `devialet.previous_track`: Skip to previous track
-- `devialet.set_night_mode`: Enable or disable night mode
-- `devialet.set_eq_preset`: Set equalizer preset (flat, voice, custom)
-- `devialet.set_custom_eq`: Set custom equalizer settings for low and high frequencies (-12.0 to 12.0 dB)
+- `devialet_play`: Start playback
+- `devialet_pause`: Pause playback
+- `devialet_stop`: Stop playback
+- `devialet_volume_set`: Set volume level (0-100)
+- `devialet_volume_mute`: Mute/unmute
+- `devialet_volume_up`: Increase volume
+- `devialet_volume_down`: Decrease volume
+- `devialet_select_source`: Select input source
+- `devialet_set_equalizer`: Set equalizer preset or custom settings
+- `devialet_set_night_mode`: Enable/disable night mode
+- `devialet_reboot_system`: Reboot the Devialet system (requires DOS >= 2.16)
+- `devialet_power_off_system`: Power off the Devialet system
+
+## Media Player Card
+
+The integration adds a media player card to Home Assistant with the following features:
+
+- Play/pause/stop controls
+- Volume control
+- Source selection
+- Equalizer control
+- Night mode toggle
+- Reboot button (if firmware version >= 2.16)
+- Power off button
+- Device information display (firmware version, serial number, local IP)
+
+## Requirements
+
+- Home Assistant 2024.1.0 or later
+- Devialet speaker with DOS firmware
+- For reboot functionality: DOS firmware version 2.16.0 or later
+
+## Limitations
+
+- The speaker cannot be powered on via the API after using the power off function
+- Reboot functionality requires DOS firmware version 2.16.0 or later
 
 ## Entities Created
 
 ### Media Player
 
-- `media_player.devialet`: Main media player entity with volume and playback controls
-
-### Sensors
-
-- `sensor.devialet_volume`: Current volume level
-- `sensor.devialet_playback_state`: Current playback state (playing/paused)
-- `sensor.devialet_artist`: Current artist
-- `sensor.devialet_track`: Current track
-- `sensor.devialet_album`: Current album
-- `sensor.devialet_stream_info`: Stream information (codec, lossless status)
-
-### Switches
-
-- `switch.devialet_night_mode`: Night mode toggle (if supported by firmware)
-
-## Example Automations
-
-```yaml
-# Automatically set volume to 5% when Home Assistant starts
-automation:
-  - alias: "Set Devialet volume at startup"
-    trigger:
-      - platform: homeassistant
-        event: start
-    action:
-      - service: devialet.set_volume
-        data:
-          volume: 5
-
-# Enable night mode at 22:00
-automation:
-  - alias: "Enable night mode in the evening"
-    trigger:
-      - platform: time
-        at: "22:00:00"
-    action:
-      - service: devialet.set_night_mode
-        data:
-          night_mode: true
-
-# Set voice EQ preset for TV source
-automation:
-  - alias: "Set voice EQ for TV"
-    trigger:
-      - platform: state
-        entity_id: media_player.devialet
-        to: "tv"
-    action:
-      - service: devialet.set_eq_preset
-        data:
-          preset: "voice"
-```
-
-## Troubleshooting
-
-- If the integration cannot connect to your Devialet speaker, make sure:
-  - The IP address is correct
-  - The speaker is powered on and connected to your network
-  - Your Home Assistant instance can reach the speaker on your network
-- Night mode and EQ features require firmware DOS 2.16 or newer
-- Check the 'availableFeatures' list in the system-info response to verify supported features
-
-## Supported Devices
-
-This integration has been tested with:
-- Phantom I
-- Phantom II
-
-It should work with any Devialet device that supports the IP Control API.
-
-## API Documentation
-
-This integration is based on the official Devialet IP Control API documentation:
-- Devialet IP Control - Reference API Documentation (Revision 1 - December 2021)
-
-## Contributions
-
-Contributions are welcome! Please feel free to submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- `
