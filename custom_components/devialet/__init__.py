@@ -28,6 +28,7 @@ from .const import (
     SERVICE_SET_EQ_PRESET,
     SERVICE_SET_CUSTOM_EQ,
     SERVICE_POWER_OFF_SYSTEM,
+    SERVICE_REBOOT_SYSTEM,
     ATTR_VOLUME,
     ATTR_SOURCE_ID,
     ATTR_NIGHT_MODE,
@@ -131,6 +132,12 @@ def register_services(hass: HomeAssistant) -> None:
         for entry_id, entry_data in hass.data[DOMAIN].items():
             api = entry_data["api"]
             await hass.async_add_executor_job(api.set_volume, volume)
+    
+    async def handle_reboot_system(call: ServiceCall) -> None:
+        """Handle the reboot_system service."""
+        for entry_id, entry_data in hass.data[DOMAIN].items():
+            api = entry_data["api"]
+            await hass.async_add_executor_job(api.reboot_system)
     
     async def handle_volume_up(call: ServiceCall) -> None:
         """Handle the volume_up service."""
@@ -283,4 +290,11 @@ def register_services(hass: HomeAssistant) -> None:
             DOMAIN,
             SERVICE_POWER_OFF_SYSTEM,
             handle_power_off_system,
+        )
+
+    if not hass.services.has_service(DOMAIN, SERVICE_REBOOT_SYSTEM):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_REBOOT_SYSTEM,
+            handle_reboot_system,
         )

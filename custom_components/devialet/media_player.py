@@ -9,6 +9,7 @@ from homeassistant.components.media_player import (
     MediaPlayerEntity,
     MediaPlayerEntityFeature,
     MediaPlayerState,
+    BrowseMedia,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -42,7 +43,12 @@ SUPPORT_DEVIALET = (
     | MediaPlayerEntityFeature.PREVIOUS_TRACK
     | MediaPlayerEntityFeature.SELECT_SOURCE
     | MediaPlayerEntityFeature.SELECT_SOUND_MODE  # For EQ presets
+    | MediaPlayerEntityFeature.BROWSE_MEDIA  # Add browse media support
+    | MediaPlayerEntityFeature.TURN_ON  # Using this for reboot button
 )
+
+# Custom feature for reboot
+SUPPORT_REBOOT = MediaPlayerEntityFeature.TURN_ON << 1
 
 # Night mode feature flag
 SUPPORT_NIGHT_MODE = MediaPlayerEntityFeature.SELECT_SOUND_MODE << 1
@@ -405,6 +411,12 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
             if "release" in device_info:
                 attrs["firmware_version"] = device_info["release"].get("canonicalVersion")
         
+        # Add reboot support status
+        if self.coordinator.data and self.coordinator.data.get("device_info"):
+            device_info = self.coordinator.data["device_info"]
+            firmware_version = device_info.get("release", {}).get("canonicalVersion", "0.0.0")
+            attrs["reboot_supported"] = firmware_version >= "2.16.0"
+        
         # Add EQ settings
         if self.coordinator.data and self.coordinator.data.get("equalizer"):
             eq_data = self.coordinator.data["equalizer"]
@@ -449,8 +461,12 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
             if "availableFeatures" in system_info and "nightMode" in system_info["availableFeatures"]:
                 self._night_mode_available = True
         
-        # Add power off support (always, since API finnes, men kan evt. sjekke firmware/system info)
-        features |= SUPPORT_POWER_OFF
+        # Add reboot support if firmware version is >= 2.16
+        if self.coordinator.data and self.coordinator.data.get("device_info"):
+            device_info = self.coordinator.data["device_info"]
+            firmware_version = device_info.get("release", {}).get("canonicalVersion", "0.0.0")
+            if firmware_version >= "2.16.0":
+                features |= SUPPORT_REBOOT
         
         return features
 
@@ -519,6 +535,11 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
                     self.api.set_eq_preset, internal_mode
                 )
 
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_on(self) -> None:
+        """Turn on the media player (used for reboot)."""
+        await self.hass.async_add_executor_job(self.api.reboot_system)
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self) -> None:

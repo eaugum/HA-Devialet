@@ -21,6 +21,7 @@ from .const import (
     API_PLAY_SOURCE,
     API_NIGHT_MODE,
     API_EQUALIZER,
+    API_SYSTEM_REBOOT,
     EQ_PRESET_FLAT,
     EQ_PRESET_VOICE,
     EQ_PRESET_CUSTOM,
@@ -196,3 +197,28 @@ class DevialetAPI:
     def power_off_system(self):
         """Power off the Devialet system (OFF mode)."""
         return self.post(API_SYSTEM_POWER_OFF)
+
+    def reboot_system(self):
+        """Reboot the Devialet system.
+        
+        Returns:
+            Response from the API.
+            
+        Note:
+            This function requires DOS >= 2.16.
+        """
+        # Check firmware version first
+        system_info = self.get_system_info()
+        if not system_info:
+            _LOGGER.error("Failed to get system info")
+            return None
+            
+        firmware_version = system_info.get("firmwareVersion", "0.0.0")
+        if firmware_version < "2.16.0":
+            _LOGGER.error(
+                "Reboot not supported. Requires DOS >= 2.16, current version: %s",
+                firmware_version
+            )
+            return None
+            
+        return self.post(API_SYSTEM_REBOOT)

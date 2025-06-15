@@ -24,6 +24,7 @@ SERVICE_SET_NIGHT_MODE = "set_night_mode"
 SERVICE_SET_EQ_PRESET = "set_eq_preset"
 SERVICE_SET_CUSTOM_EQ = "set_custom_eq"
 SERVICE_POWER_OFF_SYSTEM = "power_off_system"
+SERVICE_REBOOT_SYSTEM = "reboot_system"
 
 # Attributes
 ATTR_VOLUME = "volume"
@@ -52,6 +53,12 @@ API_PLAY_SOURCE = f"{API_BASE}/groups/current/sources/{{source_id}}/playback/pla
 API_NIGHT_MODE = f"{API_BASE}/systems/current/settings/audio/nightMode"
 API_EQUALIZER = f"{API_BASE}/systems/current/settings/audio/equalizer"
 API_SYSTEM_POWER_OFF = f"{API_BASE}/systems/current/powerOff"
+
+# System control endpoints
+API_SYSTEM_REBOOT = f"{API_BASE}/devices/current/restart"
+
+# Media browsing endpoints
+API_MEDIA_BROWSE = f"{API_BASE}/groups/current/sources/current/browse"
 
 # EQ Presets
 EQ_PRESET_FLAT = "flat"
