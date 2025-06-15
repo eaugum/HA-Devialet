@@ -96,3 +96,11 @@ next_track:
 previous_track:
   name: Previous Track
   description: Skip to the previous track.
+
+power_off_system:
+  name: Power Off System
+  description: Power off the entire Devialet system (OFF mode). Cannot be powered on again via API.
+  target:
+    entity:
+      domain: media_player
+      integration: devialet

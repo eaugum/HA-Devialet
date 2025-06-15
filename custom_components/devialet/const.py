@@ -23,6 +23,7 @@ SERVICE_PREVIOUS = "previous_track"
 SERVICE_SET_NIGHT_MODE = "set_night_mode"
 SERVICE_SET_EQ_PRESET = "set_eq_preset"
 SERVICE_SET_CUSTOM_EQ = "set_custom_eq"
+SERVICE_POWER_OFF_SYSTEM = "power_off_system"
 
 # Attributes
 ATTR_VOLUME = "volume"
@@ -50,6 +51,7 @@ API_CURRENT_SOURCE = f"{API_BASE}/groups/current/sources/current"
 API_PLAY_SOURCE = f"{API_BASE}/groups/current/sources/{{source_id}}/playback/play"
 API_NIGHT_MODE = f"{API_BASE}/systems/current/settings/audio/nightMode"
 API_EQUALIZER = f"{API_BASE}/systems/current/settings/audio/equalizer"
+API_SYSTEM_POWER_OFF = f"{API_BASE}/systems/current/powerOff"
 
 # EQ Presets
 EQ_PRESET_FLAT = "flat"

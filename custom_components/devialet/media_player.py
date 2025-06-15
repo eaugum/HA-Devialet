@@ -47,6 +47,12 @@ SUPPORT_DEVIALET = (
 # Night mode feature flag
 SUPPORT_NIGHT_MODE = MediaPlayerEntityFeature.SELECT_SOUND_MODE << 1
 
+# Custom feature for reboot
+SUPPORT_REBOOT = MediaPlayerEntityFeature.TURN_ON << 1
+
+# Custom feature for power off
+SUPPORT_POWER_OFF = MediaPlayerEntityFeature.TURN_OFF << 1
+
 # Sound modes (EQ presets)
 SOUND_MODES = [
     EQ_PRESET_FLAT,
@@ -420,6 +426,9 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
             if "peerDeviceName" in playback and playback["peerDeviceName"]:
                 attrs["source_device"] = playback["peerDeviceName"]
         
+        # Add power off support status
+        attrs["power_off_supported"] = True
+        
         return attrs
 
     def _format_sound_mode(self, mode: str) -> str:
@@ -436,6 +445,9 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
             system_info = self.coordinator.data["system_info"]
             if "availableFeatures" in system_info and "nightMode" in system_info["availableFeatures"]:
                 self._night_mode_available = True
+        
+        # Add power off support (always, since API finnes, men kan evt. sjekke firmware/system info)
+        features |= SUPPORT_POWER_OFF
         
         return features
 
@@ -504,5 +516,10 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
                     self.api.set_eq_preset, internal_mode
                 )
 
+        await self.coordinator.async_request_refresh()
+
+    async def async_turn_off(self) -> None:
+        """Power off the media player (system)."""
+        await self.hass.async_add_executor_job(self.api.power_off_system)
         await self.coordinator.async_request_refresh()
 

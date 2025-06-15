@@ -27,6 +27,7 @@ from .const import (
     SERVICE_SET_NIGHT_MODE,
     SERVICE_SET_EQ_PRESET,
     SERVICE_SET_CUSTOM_EQ,
+    SERVICE_POWER_OFF_SYSTEM,
     ATTR_VOLUME,
     ATTR_SOURCE_ID,
     ATTR_NIGHT_MODE,
@@ -201,6 +202,12 @@ def register_services(hass: HomeAssistant) -> None:
             api = entry_data["api"]
             await hass.async_add_executor_job(api.set_custom_eq, low, high)
     
+    async def handle_power_off_system(call: ServiceCall) -> None:
+        """Handle the power_off_system service."""
+        for entry_id, entry_data in hass.data[DOMAIN].items():
+            api = entry_data["api"]
+            await hass.async_add_executor_job(api.power_off_system)
+    
     # Register services if they don't already exist
     if not hass.services.has_service(DOMAIN, SERVICE_SET_VOLUME):
         hass.services.async_register(
@@ -269,4 +276,11 @@ def register_services(hass: HomeAssistant) -> None:
             SERVICE_SET_CUSTOM_EQ,
             handle_set_custom_eq,
             schema=CUSTOM_EQ_SERVICE_SCHEMA,
+        )
+
+    if not hass.services.has_service(DOMAIN, SERVICE_POWER_OFF_SYSTEM):
+        hass.services.async_register(
+            DOMAIN,
+            SERVICE_POWER_OFF_SYSTEM,
+            handle_power_off_system,
         )

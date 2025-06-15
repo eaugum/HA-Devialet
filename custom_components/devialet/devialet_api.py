@@ -24,6 +24,7 @@ from .const import (
     EQ_PRESET_FLAT,
     EQ_PRESET_VOICE,
     EQ_PRESET_CUSTOM,
+    API_SYSTEM_POWER_OFF,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -191,3 +192,7 @@ class DevialetAPI:
             }
         }
         return self.post(API_EQUALIZER, data)
+
+    def power_off_system(self):
+        """Power off the Devialet system (OFF mode)."""
+        return self.post(API_SYSTEM_POWER_OFF)
