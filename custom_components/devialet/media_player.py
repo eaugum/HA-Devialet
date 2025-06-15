@@ -429,6 +429,9 @@ class DevialetMediaPlayer(CoordinatorEntity, MediaPlayerEntity):
         # Add power off support status
         attrs["power_off_supported"] = True
         
+        # Add local IP address
+        attrs["local_ip"] = self.api.host
+        
         return attrs
 
     def _format_sound_mode(self, mode: str) -> str:
